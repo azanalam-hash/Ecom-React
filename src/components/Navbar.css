@@ -1,0 +1,225 @@
+.header{
+width:100%;
+background:#fff;
+}
+
+/* Top Bar */
+.top-bar{
+display:flex;
+justify-content:space-between;
+padding:8px 40px;
+font-size:14px;
+border-bottom:1px solid #eee;
+}
+
+/* Navbar */
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+}
+
+/* Logo */
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+/* Menu */
+.nav-menu{
+display:flex;
+list-style:none;
+gap:30px;
+z-index: 1001
+}
+
+/* Menu links */
+.nav-menu li{
+position:relative; /* needed for hover line */
+}
+
+/* Link styling */
+.nav-menu a{
+text-decoration:none;
+color:#000;
+font-weight:500;
+padding:5px 0;
+display:inline-block;
+}
+
+/* ===========================
+HOVER ANIMATION (RIGHT → LEFT LINE)
+=========================== */
+
+.nav-menu li::before{
+
+content:"";
+position:absolute;
+
+top:-5px; /* line appears above text */
+
+right:0; /* start from RIGHT */
+
+width:0; /* initially hidden */
+
+height:3px;
+background:black;
+
+transition:0.3s;
+}
+
+/* On hover */
+.nav-menu li:hover::before{
+
+width:100%; /* expand full width */
+
+left:0; /* stretch toward left */
+
+right:auto;
+
+}
+
+/* When leaving hover → shrinks back to right */
+.nav-menu li::before{
+transform-origin:right;
+}
+
+/* ===========================
+ICONS
+=========================== */
+
+.nav-icons{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.nav-icons i{
+font-size:18px;
+cursor:pointer;
+}
+
+/* Cart */
+.cart-icon{
+position:relative;
+}
+
+/* Cart badge */
+.cart-icon span{
+position:absolute;
+top:-8px;
+right:-8px;
+
+background:black;
+color:white;
+
+font-size:12px;
+padding:2px 6px;
+border-radius:50%;
+}
+
+/* ===========================
+DROPDOWN MENU
+=========================== */
+
+.dropdown-menu{
+position:absolute;
+top:35px;
+left:0;
+
+background:white;
+list-style:none;
+padding:10px 0;
+
+width:150px;
+
+opacity:0;
+visibility:hidden;
+
+transform:translateY(10px);
+transition:0.3s;
+}
+
+/* Dropdown items */
+.dropdown-menu li{
+padding:8px 15px;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu{
+
+opacity:1;
+visibility:visible;
+transform:translateY(0);
+}
+
+
+
+.hamburger{
+display:none; /* hidden on desktop */
+font-size:24px;
+cursor:pointer;
+}
+
+/* ===========================
+MOBILE VIEW
+=========================== */
+
+@media (max-width:768px){
+
+/* show hamburger */
+.hamburger{
+display:block;
+}
+
+/* hide menu by default */
+.nav-menu{
+
+position:absolute;
+top:70px;
+left:0;
+
+width:100%;
+background:white;
+
+flex-direction:column;
+align-items:center;
+
+gap:20px;
+padding:20px 0;
+
+/* hidden initially */
+transform:translateY(-200%);
+transition:0.3s;
+
+}
+
+/* when active (clicked) */
+.nav-menu.active{
+transform:translateY(0);
+}
+
+/* dropdown fix for mobile */
+.dropdown-menu{
+
+position:static;
+opacity:1;
+visibility:visible;
+transform:none;
+
+display:none; /* hidden until clicked */
+
+}
+
+/* show dropdown when active */
+.dropdown.active .dropdown-menu{
+display:block;
+}
+
+/* make icons smaller spacing */
+.nav-icons{
+gap:12px;
+}
+
+}
