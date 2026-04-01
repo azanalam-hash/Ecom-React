@@ -1,6 +1,10 @@
-// src/pages/Home.jsx
-
 import Hero from "../components/Hero";
+import FeaturedProducts from "../components/FeaturedProducts";
+import Categories from "../components/Categories";
+
+/* =========================================
+HOME PAGE
+========================================= */
 
 function Home(){
 
@@ -11,12 +15,15 @@ function Home(){
       {/* Hero Section */}
       <Hero />
 
-      {/* Next sections (we’ll add later) */}
+      {/* Featured Products */}
+      <FeaturedProducts />
+
+      {/* Categories */}
+      <Categories />
 
     </div>
 
   );
-
 }
 
 export default Home;

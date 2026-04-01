@@ -1,0 +1,91 @@
+/* HERO SECTION */
+
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #f8f8f8;
+  min-height: 100vh;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 90%;  
+}
+
+.slide {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+  background-size: cover;
+  background-position: center;
+  border-image-width: 100%;
+}
+
+.slide img {
+  width: 350px;
+  
+}
+
+.slide-content h1 {
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+.slide-content h4 {
+  font-weight: 500;
+  color: #555;
+}
+
+.slide-content p {
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  
+}
+
+/* CONTROLS */
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* DOTS */
+
+.dots {
+  text-align: center;
+  padding: 10px;
+}
+
+.dots span {
+  height: 10px;
+  width: 10px;
+  background: #bbb;
+  margin: 0 5px;
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dots .active-dot {
+  background: black;
+}

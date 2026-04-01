@@ -1,10 +1,16 @@
 import { useState } from "react";
 import "./Navbar.css";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import CartDrawer from "./CartDrawer";
 
 export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { cartCount } = useContext(CartContext);
+  const [open, setOpen] = useState(false);
+
 
   return (
     <header className="header">
@@ -64,13 +70,19 @@ export default function Navbar() {
           <i className="fa fa-user"></i>
           <i className="fa fa-heart"></i>
 
-          <div className="cart-icon">
+          <div className="cart-icon" onClick={() => setOpen(true)} >
             <i className="fa fa-shopping-bag"></i>
-            <span>0</span>
+            <span>{cartCount}</span>
           </div>
+          
         </div>
 
       </div>
+      {/* CART DRAWER */}
+      <CartDrawer
+        isOpen={open}
+        close={() => setOpen(false)}
+      />
 
     </header>
   );

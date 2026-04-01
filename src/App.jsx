@@ -3,10 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Pages
 import Home from "./pages/Home";
-import { Shop } from "./pages/Shop";
+import Shop from "./pages/Shop";
 
 // Navbar
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
 
       </Routes>
+      <Footer />
 
     </BrowserRouter>
 
