@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { products } from "../data/products";
 import "./CartDrawer.css";
+import { useNavigate } from "react-router-dom";
 
 /* =========================================
 CART DRAWER COMPONENT (CONNECTED TO CSS)
@@ -10,6 +11,7 @@ CART DRAWER COMPONENT (CONNECTED TO CSS)
 function CartDrawer({ isOpen, close }){
 
   const { cart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   let subtotal = 0;
 
@@ -72,9 +74,12 @@ function CartDrawer({ isOpen, close }){
 
           <h3>Subtotal: ${subtotal.toFixed(2)}</h3>
 
-          <button className="checkout-btn">
-            Checkout
-          </button>
+          <button
+  className="checkout-btn"
+  onClick={() => navigate("/checkout")}
+>
+  Checkout
+</button>
 
         </div>
 

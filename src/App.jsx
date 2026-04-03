@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout.jsx"
 
 // Navbar
 import Navbar from "./components/Navbar";
@@ -28,6 +29,8 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         /* ADD THIS ROUTE */
 <Route path="/product/:id" element={<ProductDetail />} />
+        {/* Checkout page */}
+        <Route path="/checkout" element={<Checkout />} />
 
       </Routes>
       <Footer />

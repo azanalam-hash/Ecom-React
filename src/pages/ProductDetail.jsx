@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { products } from "../data/products";
 import { CartContext } from "../context/CartContext";
+import "./ProductDetail.css";
 
 /* =========================================
 PRODUCT DETAIL PAGE

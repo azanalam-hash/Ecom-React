@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { products } from "../data/products";
 import { CartContext } from "../context/CartContext";
 import "./Shop.css";
+import ProductCard from "../components/ProductCard";
 
 /* =========================================
 SHOP PAGE COMPONENT
@@ -177,27 +178,9 @@ function Shop(){
 
             {visibleProducts.map(product => (
 
-              <div key={product.id} className="product-card">
+  <ProductCard key={product.id} product={product} />
 
-                <img src={product.image} />
-
-                <h3>{product.name}</h3>
-
-                <p>${product.price}</p>
-
-                <p className="rating">⭐ {product.rating}</p>
-
-                {/* 🔥 ADD TO CART (React way) */}
-                <button
-                  className="add-to-cart"
-                  onClick={()=>addToCart(product.id)}
-                >
-                  Add to Cart
-                </button>
-
-              </div>
-
-            ))}
+))}
 
           </div>
 
