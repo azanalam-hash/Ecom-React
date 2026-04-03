@@ -3,6 +3,7 @@ import "./Navbar.css";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import CartDrawer from "./CartDrawer";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -44,7 +45,7 @@ export default function Navbar() {
         <ul className={`nav-menu ${menuOpen ? "active" : ""}`}>
 
           <li><a href="#">Home</a></li>
-          <li><a href="/pages/product.html">Shop</a></li>
+          <li><Link to="/shop">Shop</Link></li>
 
           <li 
             className={`dropdown ${dropdownOpen ? "active" : ""}`}

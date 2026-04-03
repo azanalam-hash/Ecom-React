@@ -1,5 +1,10 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { Link } from "react-router-dom";
+
+/* =========================================
+PRODUCT CARD COMPONENT
+========================================= */
 
 function ProductCard({ product }){
 
@@ -9,14 +14,29 @@ function ProductCard({ product }){
 
     <div className="product-card">
 
-      <img src={product.image} />
+      {/* -----------------------------------------
+      CLICKABLE AREA → GO TO PRODUCT PAGE
+      ----------------------------------------- */}
+      <Link to={`/product/${product.id}`}>
 
-      <h3>{product.name}</h3>
+        <img src={product.image} alt={product.name} />
 
-      <p>${product.price}</p>
+        <h3>{product.name}</h3>
 
-      {/* 🔥 React way */}
-      <button onClick={() => addToCart(product.id)}>
+        <p>${product.price}</p>
+
+      </Link>
+
+
+      {/* -----------------------------------------
+      ADD TO CART BUTTON
+      ----------------------------------------- */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation(); // prevents link click
+          addToCart(product.id);
+        }}
+      >
         Add to Cart
       </button>
 
@@ -24,3 +44,5 @@ function ProductCard({ product }){
 
   );
 }
+
+export default ProductCard;

@@ -1,0 +1,33 @@
+.product-top{
+display:flex;
+gap:40px;
+padding:40px;
+}
+
+.product-images{
+flex:1;
+}
+
+.main-image{
+width:100%;
+max-width:400px;
+}
+
+.thumbnails img{
+width:60px;
+cursor:pointer;
+margin:5px;
+}
+
+.product-info{
+flex:1;
+}
+
+.quantity button{
+padding:5px 10px;
+margin:5px;
+}
+
+.colors button{
+margin:5px;
+}
