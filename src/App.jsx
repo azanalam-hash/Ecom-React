@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout.jsx"
+import CartPage from "./pages/CartPage.jsx";
+ import Wishlist from "./pages/Wishlist";
 
 // Navbar
 import Navbar from "./components/Navbar";
@@ -31,6 +33,12 @@ function App() {
 <Route path="/product/:id" element={<ProductDetail />} />
         {/* Checkout page */}
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route path="/cart" element={<CartPage />} />
+
+       
+
+<Route path="/wishlist" element={<Wishlist />} />
 
       </Routes>
       <Footer />

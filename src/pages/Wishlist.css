@@ -1,0 +1,27 @@
+.wishlist-page{
+padding:40px;
+text-align:center;
+}
+
+.wishlist-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+margin-top:30px;
+}
+
+.wishlist-card{
+text-align:center;
+}
+
+.wishlist-card img{
+width:200px;
+}
+
+.wishlist-card button{
+margin-top:10px;
+background:none;
+border:none;
+color:red;
+cursor:pointer;
+}

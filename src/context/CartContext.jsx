@@ -56,6 +56,25 @@ export function CartProvider({ children }){
     });
 
   }
+  function removeFromCart(id){
+
+  setCart(prev => {
+
+    const existing = prev.find(item => item.id === id);
+
+    if(existing.quantity > 1){
+      return prev.map(item =>
+        item.id === id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      );
+    }
+
+    return prev.filter(item => item.id !== id);
+
+  });
+
+}
 
   /* -----------------------------------------
   TOTAL COUNT (for badge)

@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import { WishlistContext } from "../context/WishlistContext";
 
 function ProductCard({ product }){
 
   const { addToCart } = useContext(CartContext);
+  const { addToWishlist } = useContext(WishlistContext);
 
   return(
 
@@ -25,6 +27,9 @@ function ProductCard({ product }){
       <button onClick={() => addToCart(product.id)}>
         Add to Cart
       </button>
+      <button onClick={() => addToWishlist(product.id)}>
+  ❤️
+</button>
 
     </div>
   );
