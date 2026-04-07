@@ -1,6 +1,7 @@
 // Load environment variables early
 require('dotenv').config();
 const http = require('http');
+const { ObjectId } = require('mongodb');
 const db = require('./database');
 
 const PORT = process.env.PORT || 5000;
@@ -89,6 +90,42 @@ db.connectToServer().then(() => {
         res.end(JSON.stringify({ message: "Error creating product", error: error.message }));
       }
     } 
+    // GET: Fetch a single product by ID
+    else if (req.method === 'GET' && path.match(/^\/api\/products\/([a-f0-9]{24})$/)) {
+      try {
+        const id = path.split('/')[3];
+        const product = await productsCollection.findOne({ _id: new ObjectId(id) });
+        
+        if (product) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(product));
+        } else {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: "Product not found" }));
+        }
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: "Error fetching product", error: error.message }));
+      }
+    }
+    // DELETE: Delete a single product by ID
+    else if (req.method === 'DELETE' && path.match(/^\/api\/products\/([a-f0-9]{24})$/)) {
+      try {
+        const id = path.split('/')[3];
+        const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
+        
+        if (result.deletedCount === 1) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: "Product deleted successfully" }));
+        } else {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: "Product not found" }));
+        }
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: "Error deleting product", error: error.message }));
+      }
+    }
     // ROUTE NOT FOUND
     else {
       res.writeHead(404, { 'Content-Type': 'application/json' });

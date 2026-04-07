@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { products } from "../data/products";
+import { ProductContext } from "../context/ProductContext";
 import { useNavigate } from "react-router-dom";
 import "./CartPage.css"
 /* =========================================
@@ -10,6 +10,7 @@ CART PAGE
 function CartPage(){
 
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  const { getProductById } = useContext(ProductContext);
   const navigate = useNavigate();
 
   let subtotal = 0;
@@ -35,7 +36,7 @@ function CartPage(){
       {/* CART ITEMS */}
       {cart.map(item => {
 
-        const product = products.find(p => p.id === item.id);
+        const product = getProductById(item.id);
         if(!product) return null;
 
         const itemTotal = product.price * item.quantity;

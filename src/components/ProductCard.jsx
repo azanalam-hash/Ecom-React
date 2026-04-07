@@ -8,12 +8,14 @@ function ProductCard({ product }){
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
 
+  const productId = product._id || product.id;
+
   return(
 
     <div className="product-card">
 
       {/* CLICKABLE IMAGE + NAME */}
-      <Link to={`/product/${product.id}`}>
+      <Link to={`/product/${productId}`}>
 
         <img src={product.image} alt={product.name} />
 
@@ -24,10 +26,10 @@ function ProductCard({ product }){
       </Link>
 
       {/* ADD TO CART */}
-      <button onClick={() => addToCart(product.id)}>
+      <button onClick={() => addToCart(productId)}>
         Add to Cart
       </button>
-      <button onClick={() => addToWishlist(product.id)}>
+      <button onClick={() => addToWishlist(productId)}>
   ❤️
 </button>
 

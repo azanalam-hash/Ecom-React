@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { products } from "../data/products";
+import { ProductContext } from "../context/ProductContext";
 import { CartContext } from "../context/CartContext";
 import "./Shop.css";
 import ProductCard from "../components/ProductCard";
@@ -18,6 +18,7 @@ function Shop(){
   /* -----------------------------------------
   STATE (REPLACES ALL OLD JS)
   ----------------------------------------- */
+  const { products, loading, error } = useContext(ProductContext);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [minPrice, setMinPrice] = useState("");
@@ -99,7 +100,11 @@ function Shop(){
       {/* PAGE TITLE */}
       <h1 className="page-title">Shop Backpacks</h1>
 
-      <div className="shop-container">
+      {loading && <p style={{textAlign:"center", padding: "20px"}}>Loading products...</p>}
+      {error && <p style={{textAlign:"center", color: "red", padding: "20px"}}>Error: {error}</p>}
+
+      {!loading && !error && (
+        <div className="shop-container">
 
         {/* =========================================
         SIDEBAR FILTERS
@@ -199,6 +204,7 @@ function Shop(){
         </section>
 
       </div>
+      )}
     </>
   );
 }

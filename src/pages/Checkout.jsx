@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { products } from "../data/products";
+import { ProductContext } from "../context/ProductContext";
 import "./Checkout.css"
 
 /* =========================================
@@ -10,6 +10,7 @@ CHECKOUT PAGE
 function Checkout(){
 
   const { cart } = useContext(CartContext);
+  const { getProductById } = useContext(ProductContext);
 
   /* -----------------------------------------
   CALCULATE TOTALS
@@ -19,7 +20,7 @@ function Checkout(){
 
   const cartItems = cart.map(item => {
 
-    const product = products.find(p => p.id === item.id);
+    const product = getProductById(item.id);
 
     if(!product) return null;
 
@@ -107,7 +108,7 @@ function Checkout(){
 
         {cartItems.map(item => item && (
 
-          <div key={item.id} className="checkout-item">
+          <div key={item._id || item.id} className="checkout-item">
 
             <img src={item.image} />
 

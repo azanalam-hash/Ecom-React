@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { products } from "../data/products";
+import { ProductContext } from "../context/ProductContext";
 import "./CartDrawer.css";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ CART DRAWER COMPONENT (CONNECTED TO CSS)
 function CartDrawer({ isOpen, close }){
 
   const { cart } = useContext(CartContext);
+  const { getProductById } = useContext(ProductContext);
   const navigate = useNavigate();
 
   let subtotal = 0;
@@ -46,7 +47,7 @@ function CartDrawer({ isOpen, close }){
 
           {cart.map(item => {
 
-            const product = products.find(p => p.id === item.id);
+            const product = getProductById(item.id);
 
             if(!product) return null;
 

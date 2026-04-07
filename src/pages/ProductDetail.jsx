@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useState, useContext } from "react";
-import { products } from "../data/products";
+import { useState, useContext, useEffect } from "react";
+import { ProductContext } from "../context/ProductContext";
 import { CartContext } from "../context/CartContext";
 import "./ProductDetail.css";
 
@@ -15,27 +15,35 @@ function ProductDetail(){
   ----------------------------------------- */
   const { id } = useParams();
 
-  /* Convert string → number */
-  const productId = parseInt(id);
+  /* Cart & DB */
+  const { addToCart } = useContext(CartContext);
+  const { getProductById, loading, error, products } = useContext(ProductContext);
 
   /* Find product */
-  const product = products.find(p => p.id === productId);
-
-  /* Cart */
-  const { addToCart } = useContext(CartContext);
+  const product = getProductById(id);
 
   /* -----------------------------------------
   STATE
   ----------------------------------------- */
-  const [mainImage, setMainImage] = useState(product?.image);
+  const [mainImage, setMainImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariant, setSelectedVariant] = useState(
-    product?.variants?.[0]
-  );
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  // Initialize state when product is found
+  useEffect(() => {
+    if (product) {
+      setMainImage(product.image);
+      setSelectedVariant(product.variants?.[0] || null);
+    }
+  }, [product]);
+
+  /* If fetching */
+  if (loading) return <h2 style={{textAlign:"center", padding: "40px"}}>Loading...</h2>;
+  if (error) return <h2 style={{textAlign:"center", padding: "40px", color: "red"}}>Error: {error}</h2>;
 
   /* If product not found */
   if(!product){
-    return <h2>Product not found</h2>;
+    return <h2 style={{textAlign:"center", padding: "40px"}}>Product not found</h2>;
   }
 
   return(
@@ -53,23 +61,21 @@ function ProductDetail(){
           {/* MAIN IMAGE */}
           <img
             className="main-image"
-            src={mainImage}
+            src={mainImage || "https://via.placeholder.com/400"}
           />
 
-          {/* THUMBNAILS */}
-          <div className="thumbnails">
-
-            {product.images.map((img, i) => (
-
-              <img
-                key={i}
-                src={img}
-                onClick={() => setMainImage(img)}
-              />
-
-            ))}
-
-          </div>
+          {/* THUMBNAILS (Defensive check for older mock vs new DB) */}
+          {product.images && product.images.length > 0 && (
+            <div className="thumbnails">
+              {product.images.map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  onClick={() => setMainImage(img)}
+                />
+              ))}
+            </div>
+          )}
 
         </div>
 
@@ -95,25 +101,23 @@ function ProductDetail(){
 
 
           {/* =============================
-          COLORS (VARIANTS)
+          COLORS (VARIANTS) - Display only if exists
           ============================= */}
-          <div className="colors">
-
-            {product.variants.map((v, i) => (
-
-              <button
-                key={i}
-                onClick={()=>{
-                  setSelectedVariant(v);
-                  setMainImage(v.image);
-                }}
-              >
-                {v.color}
-              </button>
-
-            ))}
-
-          </div>
+          {product.variants && product.variants.length > 0 && (
+            <div className="colors">
+              {product.variants.map((v, i) => (
+                <button
+                  key={i}
+                  onClick={()=>{
+                    setSelectedVariant(v);
+                    setMainImage(v.image);
+                  }}
+                >
+                  {v.color}
+                </button>
+              ))}
+            </div>
+          )}
 
 
           {/* =============================
@@ -159,13 +163,13 @@ function ProductDetail(){
         <div className="products-grid">
 
           {products
-            .filter(p => p.category === product.category && p.id !== product.id)
+            .filter(p => p.category === product.category && (p._id !== product._id && p.id !== product.id))
             .slice(0,4)
             .map(item => (
 
-              <div key={item.id} className="product-card">
+              <div key={item._id || item.id} className="product-card">
 
-                <img src={item.image} />
+                <img src={item.image || "https://via.placeholder.com/200"} />
                 <h4>{item.name}</h4>
                 <p>${item.price}</p>
 

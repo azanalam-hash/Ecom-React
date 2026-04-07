@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { WishlistContext } from "../context/WishlistContext";
-import { products } from "../data/products";
+import { ProductContext } from "../context/ProductContext";
 import "./Wishlist.css"
 
 /* =========================================
@@ -10,9 +10,10 @@ WISHLIST PAGE
 function Wishlist(){
 
   const { wishlist, removeFromWishlist } = useContext(WishlistContext);
+  const { products } = useContext(ProductContext);
 
   /* FILTER PRODUCTS FROM IDS */
-  const wishlistItems = products.filter(p => wishlist.includes(p.id));
+  const wishlistItems = products.filter(p => wishlist.includes(p.id) || wishlist.includes(p._id));
 
   return(
 
@@ -24,7 +25,7 @@ function Wishlist(){
 
         {wishlistItems.map(product => (
 
-          <div key={product.id} className="wishlist-card">
+          <div key={product._id || product.id} className="wishlist-card">
 
             <img src={product.image} />
 
@@ -37,7 +38,7 @@ function Wishlist(){
             </p>
 
             <button
-              onClick={() => removeFromWishlist(product.id)}
+              onClick={() => removeFromWishlist(product._id || product.id)}
             >
               Remove From wishlist
             </button>

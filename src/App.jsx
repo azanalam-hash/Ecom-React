@@ -7,8 +7,11 @@ import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout.jsx"
 import CartPage from "./pages/CartPage.jsx";
- import Wishlist from "./pages/Wishlist";
+import Wishlist from "./pages/Wishlist";
 
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminAddProduct from "./pages/admin/AddProduct";
 // Navbar
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -39,6 +42,10 @@ function App() {
        
 
 <Route path="/wishlist" element={<Wishlist />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/add-product" element={<AdminAddProduct />} />
 
       </Routes>
       <Footer />
