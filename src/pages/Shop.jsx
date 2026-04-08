@@ -1,5 +1,4 @@
-import { useState, useContext } from "react";
-import { ProductContext } from "../context/ProductContext";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../context/CartContext";
 import "./Shop.css";
 import ProductCard from "../components/ProductCard";
@@ -16,9 +15,11 @@ function Shop(){
   const { addToCart } = useContext(CartContext);
 
   /* -----------------------------------------
-  STATE (REPLACES ALL OLD JS)
+  STATE
   ----------------------------------------- */
-  const { products, loading, error } = useContext(ProductContext);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [minPrice, setMinPrice] = useState("");
@@ -44,55 +45,51 @@ function Shop(){
   }
 
   /* -----------------------------------------
-  FILTER PRODUCTS
+  FETCH FROM SERVER (DYNAMIC FILTERING)
   ----------------------------------------- */
-  let filteredProducts = products.filter(product => {
-
-    // Category filter
-    if(
-      selectedCategories.length > 0 &&
-      !selectedCategories.includes(product.category)
-    ){
-      return false;
+  useEffect(() => {
+    // 1. Build Query Parameters
+    const params = new URLSearchParams();
+    
+    if(selectedCategories.length > 0) {
+      params.append("categories", selectedCategories.join(','));
     }
+    if(minPrice) params.append("minPrice", minPrice);
+    if(maxPrice) params.append("maxPrice", maxPrice);
+    if(search) params.append("search", search);
+    if(sort) params.append("sort", sort);
 
-    // Price filter
-    if(minPrice && product.price < minPrice) return false;
-    if(maxPrice && product.price > maxPrice) return false;
+    // 2. Fetch Function
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const url = `http://localhost:5000/api/products?${params.toString()}`;
+        console.log("Fetching:", url); // for debugging
+        const res = await fetch(url);
+        if(!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Search filter
-    if(
-      !product.name.toLowerCase().includes(search.toLowerCase())
-    ){
-      return false;
-    }
+    // 3. Debounce the fetch so we don't spam the server on every keystroke
+    const delayDebounceFn = setTimeout(() => {
+      fetchProducts();
+    }, 400);
 
-    return true;
-  });
+    return () => clearTimeout(delayDebounceFn);
 
-  /* -----------------------------------------
-  SORT PRODUCTS
-  ----------------------------------------- */
-  if(sort === "low-high"){
-    filteredProducts.sort((a,b) => a.price - b.price);
-  }
-
-  if(sort === "high-low"){
-    filteredProducts.sort((a,b) => b.price - a.price);
-  }
-
-  if(sort === "name"){
-    filteredProducts.sort((a,b) => a.name.localeCompare(b.name));
-  }
-
-  if(sort === "rating"){
-    filteredProducts.sort((a,b) => b.rating - a.rating);
-  }
+  }, [selectedCategories, minPrice, maxPrice, search, sort]);
 
   /* -----------------------------------------
   LOAD MORE LOGIC
   ----------------------------------------- */
-  const visibleProducts = filteredProducts.slice(0, visibleCount);
+  const visibleProducts = products.slice(0, visibleCount);
 
   return(
 
@@ -183,7 +180,7 @@ function Shop(){
 
             {visibleProducts.map(product => (
 
-  <ProductCard key={product.id} product={product} />
+  <ProductCard key={product._id || product.id} product={product} />
 
 ))}
 
@@ -191,7 +188,7 @@ function Shop(){
 
 
           {/* LOAD MORE */}
-          {visibleCount < filteredProducts.length && (
+          {visibleCount < products.length && (
 
             <button
               onClick={()=>setVisibleCount(prev => prev + 4)}
