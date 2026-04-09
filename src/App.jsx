@@ -12,6 +12,9 @@ import Wishlist from "./pages/Wishlist";
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminAddProduct from "./pages/admin/AddProduct";
+
+// Mega Form
+import MegaForm from "./pages/MegaForm";
 // Navbar
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -42,6 +45,9 @@ function App() {
        
 
 <Route path="/wishlist" element={<Wishlist />} />
+
+        {/* Mega Form Route */}
+        <Route path="/mega-form" element={<MegaForm />} />
 
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />

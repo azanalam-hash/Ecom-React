@@ -46,6 +46,7 @@ export default function Navbar() {
 
           <li><a href="#">Home</a></li>
           <li><Link to="/shop">Shop</Link></li>
+          <li><Link to="/mega-form">Mega Form</Link></li>
 
           <li 
             className={`dropdown ${dropdownOpen ? "active" : ""}`}
