@@ -9,6 +9,7 @@ const cors = require('cors');
 const db = require('./database');
 const productRoutes = require('./routes/productRoutes');
 const megaFormRoutes = require('./routes/megaFormRoutes');
+const userRoutes = require('./routes/userRoutes');
 const path = require('path');
 
 // Initialize the Express web app
@@ -27,6 +28,9 @@ app.use('/api/products', productRoutes);
 
 // Mega Form route
 app.use('/api/mega-form', megaFormRoutes);
+
+// Users route
+app.use('/api/users', userRoutes);
 
 // Fallback Route for non-existent endpoints
 app.use((req, res) => {
