@@ -23,7 +23,27 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+// File validation filters
+const fileFilter = (req, file, cb) => {
+  if (file.fieldname === 'profileImage') {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+      return cb(new Error('Profile image must be a JPG, JPEG, or PNG file.'));
+    }
+  } else if (file.fieldname === 'documents') {
+    if (!file.originalname.match(/\.(pdf|doc|docx)$/i)) {
+      return cb(new Error('Documents must be PDF or DOC/DOCX files.'));
+    }
+  }
+  cb(null, true);
+};
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit for any file
+  }
+});
 
 /**
  * POST /api/mega-form
@@ -42,6 +62,37 @@ router.post('/', cpUpload, async (req, res) => {
     const megaFormsCollection = database.collection('megaForms');
 
     const formData = req.body;
+
+    // --- MANUAL VALIDATIONS ---
+    const errors = [];
+    if (!formData.fullName || formData.fullName.trim() === '') {
+      errors.push('Full name is required.');
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      errors.push('A valid email address is required.');
+    }
+
+    if (formData.salary) {
+      const salaryNum = parseFloat(formData.salary);
+      if (isNaN(salaryNum) || salaryNum <= 0) {
+        errors.push('Salary must be a positive number.');
+      }
+    }
+
+    if (formData.taxPercentage) {
+      const taxNum = parseFloat(formData.taxPercentage);
+      if (isNaN(taxNum) || taxNum < 0 || taxNum > 100) {
+        errors.push('Tax percentage must be between 0 and 100.');
+      }
+    }
+
+    if (errors.length > 0) {
+      // Return 400 Bad Request immediately if validation fails
+      return res.status(400).json({ message: 'Validation failed', errors });
+    }
+    // --------------------------
 
     // Parse array/json strings if they were stringified from FormData
     if (formData.hobbies) {
