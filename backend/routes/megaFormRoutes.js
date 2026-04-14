@@ -37,7 +37,7 @@ const fileFilter = (req, file, cb) => {
   cb(null, true);
 };
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
@@ -68,7 +68,7 @@ router.post('/', cpUpload, async (req, res) => {
     if (!formData.fullName || formData.fullName.trim() === '') {
       errors.push('Full name is required.');
     }
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
       errors.push('A valid email address is required.');
@@ -96,10 +96,10 @@ router.post('/', cpUpload, async (req, res) => {
 
     // Parse array/json strings if they were stringified from FormData
     if (formData.hobbies) {
-        try { formData.hobbies = JSON.parse(formData.hobbies); } catch(e) {}
+      try { formData.hobbies = JSON.parse(formData.hobbies); } catch (e) { }
     }
     if (formData.skills) {
-        try { formData.skills = JSON.parse(formData.skills); } catch(e) {}
+      try { formData.skills = JSON.parse(formData.skills); } catch (e) { }
     }
 
     const payload = {
@@ -112,7 +112,7 @@ router.post('/', cpUpload, async (req, res) => {
       if (req.files['profileImage'] && req.files['profileImage'].length > 0) {
         payload.profileImage = `/uploads/${req.files['profileImage'][0].filename}`;
       }
-      
+
       if (req.files['documents']) {
         payload.documents = req.files['documents'].map(file => `/uploads/${file.filename}`);
       }

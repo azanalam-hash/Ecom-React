@@ -108,6 +108,17 @@ function MegaForm() {
     const newErrors = {};
     let isValid = true;
 
+    if (!formData.fullName || formData.fullName.trim() === "") {
+      newErrors.fullName = "Full Name is required.";
+      isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      newErrors.email = "A valid email address is required.";
+      isValid = false;
+    }
+
     if (formData.password && formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters long.";
       isValid = false;
@@ -271,7 +282,7 @@ function MegaForm() {
                 {Object.keys(countriesMap).map(c => <option key={c} value={c}>{c}</option>)}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-indigo-500">
-                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
               </div>
             </div>
           </div>
@@ -287,7 +298,7 @@ function MegaForm() {
                 ))}
               </select>
               <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 ${!formData.country ? 'text-gray-300' : 'text-indigo-500'}`}>
-                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
               </div>
             </div>
             {errors.city && <span className="text-rose-500 text-xs mt-1.5 ml-1 font-medium">{errors.city}</span>}
@@ -296,8 +307,8 @@ function MegaForm() {
           {/* 9. Date of Birth */}
           <div className="flex flex-col">
             <label className="block text-sm font-semibold text-gray-700 mb-1.5 ml-1">Date of Birth</label>
-            <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} 
-              className={`w-full px-4 py-[11px] rounded-xl border outline-none transition-all duration-200 text-gray-800 cursor-pointer ${errors.dateOfBirth ? 'border-rose-400 focus:ring-rose-200 bg-rose-50' : 'border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-gray-50/50 focus:bg-white'}`} style={{colorScheme: "light"}} />
+            <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange}
+              className={`w-full px-4 py-[11px] rounded-xl border outline-none transition-all duration-200 text-gray-800 cursor-pointer ${errors.dateOfBirth ? 'border-rose-400 focus:ring-rose-200 bg-rose-50' : 'border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-gray-50/50 focus:bg-white'}`} style={{ colorScheme: "light" }} />
             {errors.dateOfBirth && <span className="text-rose-500 text-xs mt-1.5 ml-1 font-medium">{errors.dateOfBirth}</span>}
           </div>
 
@@ -406,7 +417,7 @@ function MegaForm() {
                 {Object.keys(countriesMap).map(c => <option key={`filt-${c}`} value={c}>{c}</option>)}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-indigo-500">
-                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
               </div>
             </div>
           </div>

@@ -2,15 +2,23 @@ import { useState } from "react";
 import "./Navbar.css";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
 import CartDrawer from "./CartDrawer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { cartCount } = useContext(CartContext);
+  const { user, logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
 
   return (
@@ -69,7 +77,17 @@ export default function Navbar() {
         {/* Icons */}
         <div className="nav-icons">
           <i className="fa fa-search"></i>
-          <i className="fa fa-user"></i>
+          
+          {user ? (
+            <div className="user-icon-menu popup-menu-trigger" style={{position: 'relative', display: 'inline-block', cursor: 'pointer', marginLeft: '15px'}}>
+              <span onClick={handleLogout} title="Logout" style={{ fontWeight: "bold", color: "#3b82f6" }}>
+                 Welcome, {user.name.split(' ')[0]} <i className="fa fa-sign-out" style={{marginLeft: '4px'}}></i>
+              </span>
+            </div>
+          ) : (
+            <Link to="/login" style={{color: 'inherit'}}><i className="fa fa-user"></i></Link>
+          )}
+
           <i className="fa fa-heart"></i>
 
           <div className="cart-icon" onClick={() => setOpen(true)} >

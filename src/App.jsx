@@ -19,6 +19,9 @@ import MegaForm from "./pages/MegaForm";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+// Auth Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -48,6 +51,10 @@ function App() {
 
         {/* Mega Form Route */}
         <Route path="/mega-form" element={<MegaForm />} />
+
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />

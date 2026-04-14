@@ -9,6 +9,7 @@ const cors = require('cors');
 const db = require('./database');
 const productRoutes = require('./routes/productRoutes');
 const megaFormRoutes = require('./routes/megaFormRoutes');
+const userRoutes = require('./routes/userRoutes');
 const path = require('path');
 
 // Initialize the Express web app
@@ -28,9 +29,21 @@ app.use('/api/products', productRoutes);
 // Mega Form route
 app.use('/api/mega-form', megaFormRoutes);
 
+// Users route
+app.use('/api/users', userRoutes);
+
 // Fallback Route for non-existent endpoints
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
+});
+
+// Global Error Handler (Catches Multer crashes or sync errors)
+app.use((err, req, res, next) => {
+  console.error("Express Error Caught:", err.message);
+  res.status(500).json({ 
+    message: "A server middleware error occurred.", 
+    error: err.message 
+  });
 });
 
 // Connect to MongoDB before accepting connections
