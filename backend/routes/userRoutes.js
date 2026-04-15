@@ -96,4 +96,28 @@ router.post('/login', async (req, res) => {
   }
 });
 
+const { protect } = require('../middleware/authMiddleware');
+
+/**
+ * GET /api/users/profile
+ * Get user profile (Protected Route)
+ */
+router.get('/profile', protect, async (req, res) => {
+  try {
+    // req.user was securely attached locally by our authMiddleware!
+    if (req.user) {
+      res.json({
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        createdAt: req.user.createdAt
+      });
+    } else {
+      res.status(404).json({ message: 'User not found in system' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error fetching profile', error: error.message });
+  }
+});
+
 module.exports = router;

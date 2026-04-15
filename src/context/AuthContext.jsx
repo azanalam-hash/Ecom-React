@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Check if user is logged in
     const storedUserInfo = localStorage.getItem("userInfo");
-    if (storedUserInfo) {
-      setUser(JSON.stringify(storedUserInfo)); // Keep it simple and assume standard JSON
-    }
     
-    // Quick parse safety
-    try {
-      if(storedUserInfo) setUser(JSON.parse(storedUserInfo));
-    } catch(e) {
-      console.log('Error parsing token');
+    if (storedUserInfo) {
+      try {
+        // Correctly parse the JSON straight away
+        setUser(JSON.parse(storedUserInfo));
+      } catch(e) {
+        console.error('Error parsing token from storage:', e);
+        localStorage.removeItem("userInfo");
+      }
     }
 
     setLoading(false);
@@ -70,8 +70,18 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("userInfo");
   };
 
+  const getAuthHeaders = () => {
+    if (user && user.token) {
+      return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`
+      };
+    }
+    return { "Content-Type": "application/json" };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, getAuthHeaders, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );

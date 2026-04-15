@@ -88,7 +88,9 @@ export default function Navbar() {
             <Link to="/login" style={{color: 'inherit'}}><i className="fa fa-user"></i></Link>
           )}
 
-          <i className="fa fa-heart"></i>
+          <Link to="/wishlist" style={{ color: 'inherit' }}>
+            <i className="fa fa-heart"></i>
+          </Link>
 
           <div className="cart-icon" onClick={() => setOpen(true)} >
             <i className="fa fa-shopping-bag"></i>

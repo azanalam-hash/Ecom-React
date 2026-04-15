@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 /* =========================================
 CREATE GLOBAL CART CONTEXT
@@ -10,29 +11,34 @@ PROVIDER (WRAPS APP)
 ========================================= */
 export function CartProvider({ children }){
 
+  const { user } = useContext(AuthContext);
+  const cartKey = user ? `cart_${user._id}` : "cart_guest";
+
   /* -----------------------------------------
   CART STATE
   ----------------------------------------- */
   const [cart, setCart] = useState([]);
+  const [loadedKey, setLoadedKey] = useState(null);
 
   /* -----------------------------------------
-  LOAD CART FROM LOCAL STORAGE (on start)
+  LOAD CART FROM LOCAL STORAGE
   ----------------------------------------- */
   useEffect(() => {
-
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
     setCart(storedCart);
-
-  }, []);
+    setLoadedKey(cartKey); // Track that we successfully loaded this key
+  }, [cartKey]);
 
   /* -----------------------------------------
   SAVE CART TO LOCAL STORAGE (on change)
   ----------------------------------------- */
   useEffect(() => {
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-  }, [cart]);
+    // Only save if the cart we are holding actually belongs to the current user!
+    // This fixes a famous React race condition where switching users copies the old cart over.
+    if (loadedKey === cartKey) {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+  }, [cart, loadedKey, cartKey]);
 
   /* -----------------------------------------
   ADD TO CART FUNCTION

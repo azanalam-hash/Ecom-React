@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 /* =========================================
 CREATE CONTEXT
@@ -10,19 +11,30 @@ PROVIDER
 ========================================= */
 export function WishlistProvider({ children }){
 
+  const { user } = useContext(AuthContext);
+  const wishlistKey = user ? `wishlist_${user._id}` : "wishlist_guest";
+
+  const [wishlist, setWishlist] = useState([]);
+  const [loadedKey, setLoadedKey] = useState(null);
+
   /* -----------------------------------------
   LOAD FROM LOCAL STORAGE
   ----------------------------------------- */
-  const [wishlist, setWishlist] = useState(() => {
-    return JSON.parse(localStorage.getItem("wishlist")) || [];
-  });
+  useEffect(() => {
+    const storedWishlist = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+    setWishlist(storedWishlist);
+    setLoadedKey(wishlistKey); // Track successful load
+  }, [wishlistKey]);
 
   /* -----------------------------------------
   SAVE TO LOCAL STORAGE
   ----------------------------------------- */
   useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
+    // Only save if the state matches the active user key!
+    if (loadedKey === wishlistKey) {
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    }
+  }, [wishlist, loadedKey, wishlistKey]);
 
   /* -----------------------------------------
   ADD TO WISHLIST
